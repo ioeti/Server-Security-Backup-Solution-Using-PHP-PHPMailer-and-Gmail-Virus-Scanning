@@ -1,6 +1,8 @@
 # Server-Security-Backup-Solution-Using-PHP-PHPMailer-and-Gmail-Virus-Scanning
 By Claudio Klemp, in cooperation with ChatGPT
 
+https://chatgpt.com/share/66f27b24-d0ac-8002-9986-076d1ae6b1c2
+
 Introduction
 This post explains a secure backup solution that automates the process of gzipping server directories, splitting large backups into smaller parts, and emailing them via PHPMailer to a Gmail account. Gmail's built-in virus scanning discards infected parts, providing a virus-free backup. This method is especially valuable after a server has been cleaned from malware or other threats.
 
