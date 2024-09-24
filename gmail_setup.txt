@@ -1,0 +1,77 @@
+It is needed to setup a Gmail account
+
+1.) Two step verification is required
+2.) You need to obtain a security token
+
+The phpMailer you could use like this :
+
+<php
+
+.... 
+
+
+function sendMail($from, $to, $subject, $html, $alt, $attachment) {
+    // Get the server path
+    $server_path = $_SERVER['DOCUMENT_ROOT'];
+
+    // Include PHPMailer files using server path
+    require $server_path . '/phpmailer/src/Exception.php';
+    require $server_path . '/phpmailer/src/PHPMailer.php';
+    require $server_path . '/phpmailer/src/SMTP.php';
+
+    // Create a new instance of PHPMailer
+    //Create an instance; passing `true` enables exceptions
+    $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
+
+    //Create a unixtimestamp to set the name of the attachment
+    // $timestamp = round($microtime * 1000) . rand(0, 10000);
+    // $attachmentFileName = "directory/" . $timestamp . '.html';
+    // file_put_contents($attachmentFileName, $attachment);
+
+    try {
+        //Server settings
+        $mail->isSMTP();                                            //Send using SMTP
+        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+        $mail->SMTPAuth   = true; //Enable SMTP authentication
+        $mail->Username   = 'SMTP username @gmail.com';              //SMTP username
+        $mail->Password = 'Gmail security token'; //Gmail security token
+        $mail->SMTPSecure = 'TLS';            //Enable implicit TLS encryption
+        $mail->Port = 587;                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+        //Recipients
+        $mail->setFrom($from);
+        $mail->addAddress($to);     //Add a recipient
+
+
+        // optional replyTo
+//       $mail->addReplyTo($to);
+//       $mail->addReplyTo($from);
+
+
+        //$mail->addCC('cc@example.com');
+        //$mail->addBCC('bcc@example.com');
+
+        //Content
+        $mail->isHTML(true);                                  //Set email format to HTML
+        $mail->Subject = $subject;
+
+        // Embed images not needed , but useful for other purposes
+        preg_match_all('/<img[^>]+src=([\'"])(?P<src>.+?)\1[^>]*>/i', $html, $matches);
+        foreach ($matches['src'] as $imgUrl) {
+            $image_cid = $mail->embed($imgUrl);
+            $html = str_replace($imgUrl, 'cid:' . $image_cid, $html);
+        }
+        // Embed images not needed , but useful for other purposes
+
+        $mail->Body = $html; // any html message 
+
+        // the attachment I use the mailsubject
+        $attachmentName = cleanAndJoinString($subject) . '.html'; 
+
+        $mail->addStringAttachment($attachment, $attachmentName, 'base64', 'text/html');
+        $mail->AltBody = $alt;
+
+        $mail->send();
+
+... 
+?>
