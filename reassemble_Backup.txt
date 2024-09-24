@@ -1,0 +1,3 @@
+cat directory_backup_*.tar.gz_part_* > complete.tar.gz
+// This will merge the split parts back into the original .tar.gz file, 
+// allowing you to extract and restore the backup.
