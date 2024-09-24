@@ -1,0 +1,53 @@
+//Set Up Cron Job to Run the Script Automatically:
+//*************************************************
+
+//Access the cron configuration by opening your crontab file. 
+//You can do this by running the following command in the terminal:
+
+  crontab -e
+
+
+//Add a New Cron Job:
+//*******************
+
+//To run the script twice a day, you can specify the times in the cron schedule. 
+//For example, to run the script at 2 AM and 2 PM, add the following lines to the crontab file:
+
+0 2,14 * * * /usr/bin/php /path/to/your/script.php
+
+//This means:
+//0: Run at the 0th minute (the start of the hour).
+//2,14: Run at 2 AM and 2 PM.
+//* * *: Run every day, every month, and every day of the week.
+// /usr/bin/php: Path to the PHP binary (this may vary depending on your system; check the correct path with which php).
+// /path/to/your/script.php: The path to your PHP script. 
+
+
+//Verify Cron is Working:
+//***********************
+
+  //Once the cron job is saved, you can verify it is scheduled correctly 
+  //by listing your cron jobs:
+
+  crontab -l
+
+  //Check logs in /var/log/syslog (or /var/log/cron 
+  //depending on your Linux distribution) to ensure cron jobs are running:
+
+  grep CRON /var/log/syslog
+
+// Permissions and Execution:
+//**************************
+
+  //Make sure the PHP script has execution permission, 
+  //or simply ensure the web server user has the correct permissions to access it:
+
+  chmod +x /path/to/your/script.php
+
+//Summary:
+//*******
+
+//The cron job will automatically run the script at 2 AM and 2 PM every day, 
+//handling the gzip operation and sending the email.
+//This setup doesn't require any manual intervention once configured.
+
